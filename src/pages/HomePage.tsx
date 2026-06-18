@@ -2,7 +2,6 @@ import { ArrowRight, MapPin, Phone, CheckCircle } from 'lucide-react';
 import { useState, useEffect, useRef, FormEvent } from 'react';
 import { images } from '../lib/images';
 import { sendContactEmail, ContactFormData } from '../lib/emailService';
-import { supabase } from '../lib/supabase';
 
 function HomePage() {
   const [scrollY, setScrollY] = useState(0);
@@ -102,23 +101,6 @@ function HomePage() {
       console.error('Email sending failed:', error);
     }
 
-    try {
-      const { error } = await supabase.from('contact_submissions').insert({
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        message: data.message,
-        form_location: 'hero',
-        email_sent: emailSent,
-      });
-
-      if (error) {
-        console.error('Database error:', error);
-      }
-    } catch (error) {
-      console.error('Form submission error:', error);
-    }
-
     setHeroFormStatus('success');
     setHeroFormMessage("Thanks! We'll contact you within 24 hours.");
     e.currentTarget.reset();
@@ -151,23 +133,6 @@ function HomePage() {
       emailSent = true;
     } catch (error) {
       console.error('Email sending failed:', error);
-    }
-
-    try {
-      const { error } = await supabase.from('contact_submissions').insert({
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        message: data.message,
-        form_location: 'cta',
-        email_sent: emailSent,
-      });
-
-      if (error) {
-        console.error('Database error:', error);
-      }
-    } catch (error) {
-      console.error('Form submission error:', error);
     }
 
     setCtaFormStatus('success');

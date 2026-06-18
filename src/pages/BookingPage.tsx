@@ -2,7 +2,6 @@ import { Phone, CheckCircle, Calendar } from 'lucide-react';
 import { useState, FormEvent } from 'react';
 import { images } from '../lib/images';
 import { sendContactEmail, ContactFormData } from '../lib/emailService';
-import { supabase } from '../lib/supabase';
 
 function BookingPage() {
   const [formLoading, setFormLoading] = useState(false);
@@ -30,23 +29,6 @@ function BookingPage() {
       emailSent = true;
     } catch (error) {
       console.error('Email sending failed:', error);
-    }
-
-    try {
-      const { error } = await supabase.from('contact_submissions').insert({
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        message: data.message,
-        form_location: 'booking',
-        email_sent: emailSent,
-      });
-
-      if (error) {
-        console.error('Database error:', error);
-      }
-    } catch (error) {
-      console.error('Form submission error:', error);
     }
 
     setFormStatus('success');
